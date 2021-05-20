@@ -1,11 +1,10 @@
-const express = require('express')
-const mysqlDb = require('mysql');
+const express = require('express');
 
 const app = express();
 
-app.get('/',(req,res)=>{
-    res.send('Hello world!');        
-});
+app.use(express.json());
+
+app.use('/api/complaints',require('./routes/api/complaints'));
 
 const PORT = process.env.PORT || 5000;
 
