@@ -1,5 +1,7 @@
 const db = require("./db");
 
+// TODO refactor functions to pass queries as param and store queries somewhere else
+
 function allcomplaints(){
     return new Promise((resolve,reject) => {
         let myQuery = `SELECT * FROM complaints;`;

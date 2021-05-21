@@ -10,7 +10,7 @@ router.get("/all",(req,res) => {
 
 // GET complaints of a hostel
 router.get("/", (req, res) => {
-  db.getComplaints(req.body.hostelNo).then((result) => res.send(result));
+  db.getComplaints(req.body.hostel_no).then((result) => res.send(result));
 });
 
 // (POST) Add a new complaint
