@@ -1,37 +1,41 @@
 const express = require("express");
 const router = express.Router();
-const db = require("../../models/db");
+const db = require("../../models/dbfunctions");
 
-// GET all complaints
+
+//  GET all complaints
+router.get("/all",(req,res) => {
+  db.allcomplaints().then(result => res.send(result));
+})
+
+// GET complaints of a hostel
 router.get("/", (req, res) => {
-  getComplaints(req.body.hostelNo).then((result) => res.send(result));
+  db.getComplaints(req.body.hostelNo).then((result) => res.send(result));
 });
 
-router.get("/heads", (req, res) => {
-  checkHostelHead(req.body.name, req.body.email).then((result) =>
-    res.send(result)
-  );
+// (POST) Add a new complaint
+router.post("/", (req, res) => {
+  const data = req.body;
+  db.addComplaint(
+    data.reg_no,
+    data.student_name,
+    data.email,
+    data.hostel_no,
+    data.room_no,
+    data.phone_no,
+    data.type
+  ).then((result) => res.send(result));
 });
 
-function checkHostelHead(name, email) {
-  return new Promise((resolve, reject) => {
-    let myQuery = `SELECT name FROM hostel_heads WHERE name="${name}" AND email="${email}";`;
-    db.query(myQuery, function (err, result, fields) {
-      if (err) reject(err);
-      else resolve(result != 0 ? true : false);
-    });
-  });
-}
+// (PUT) Update a complaint status
+router.put("/", (req, res) => {
+  db.updateComplaint(req.body.id).then((result) => res.send(result));
+});
 
-function getComplaints(hostelNo) {
-  return new Promise((resolve, reject) => {
-    let myQuery = `SELECT * FROM complaints
-    WHERE hostel_no=${hostelNo};`;
-    db.query(myQuery, function (err, result, fields) {
-      if (err) reject(err);
-      else resolve(result);
-    });
-  });
-}
+// DELETE a complaint
+router.delete("/", (req, res) => {
+  db.deleteComplaint(req.body.id).then((result) => res.send(result));
+});
+
 
 module.exports = router;
