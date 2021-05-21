@@ -4,19 +4,32 @@ const db = require("../../models/db");
 
 // GET all complaints
 router.get("/", (req, res) => {
-  execQuery(req.body.name,req.body.email).then((result) => res.send(result));
+  getComplaints(req.body.hostelNo).then((result) => res.send(result));
 });
 
-function execQuery(name, email) {
+router.get("/heads", (req, res) => {
+  checkHostelHead(req.body.name, req.body.email).then((result) =>
+    res.send(result)
+  );
+});
+
+function checkHostelHead(name, email) {
   return new Promise((resolve, reject) => {
     let myQuery = `SELECT name FROM hostel_heads WHERE name="${name}" AND email="${email}";`;
     db.query(myQuery, function (err, result, fields) {
       if (err) reject(err);
-      else {
-        console.log(result.length);
-        // return result.length != 0 ? true : false;
-        resolve(result != 0 ? true : false);
-      }
+      else resolve(result != 0 ? true : false);
+    });
+  });
+}
+
+function getComplaints(hostelNo) {
+  return new Promise((resolve, reject) => {
+    let myQuery = `SELECT * FROM complaints
+    WHERE hostel_no=${hostelNo};`;
+    db.query(myQuery, function (err, result, fields) {
+      if (err) reject(err);
+      else resolve(result);
     });
   });
 }
