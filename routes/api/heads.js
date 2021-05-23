@@ -4,14 +4,14 @@ const db = require("../../models/db");
 
 // GET if hostel head or not
 router.get("/", (req, res) => {
-  checkHostelHead(req.body.name, req.body.email).then((result) =>
+  checkHostelHead(req.body.email).then((result) =>
     res.send(result)
   );
 });
 
-function checkHostelHead(name, email) {
+function checkHostelHead(email) {
   return new Promise((resolve, reject) => {
-    let myQuery = `SELECT name FROM hostel_heads WHERE name="${name}" AND email="${email}";`;
+    let myQuery = `SELECT name FROM hostel_heads WHERE email="${email}";`;
     db.query(myQuery, function (err, result, fields) {
       if (err) reject(err);
       else resolve(result != 0 ? true : false);
