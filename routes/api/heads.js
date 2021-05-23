@@ -4,6 +4,7 @@ const db = require("../../models/db");
 
 // GET if hostel head or not
 router.get("/", (req, res) => {
+  print(res.body);
   checkHostelHead(req.body.email).then((result) =>
     res.send(result)
   );
