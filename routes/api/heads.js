@@ -4,7 +4,6 @@ const db = require("../../models/db");
 
 // GET if hostel head or not
 router.get("/", (req, res) => {
-  // print(res.body);
   checkHostelHead(req.query.email).then((result) =>
     res.send(result)
   );
@@ -12,10 +11,10 @@ router.get("/", (req, res) => {
 
 function checkHostelHead(email) {
   return new Promise((resolve, reject) => {
-    let myQuery = `SELECT name FROM hostel_heads WHERE email="${email}";`;
+    let myQuery = `SELECT hostel_no FROM hostel_heads WHERE email="${email}";`;
     db.query(myQuery, function (err, result, fields) {
       if (err) reject(err);
-      else resolve(result != 0 ? true : false);
+      else resolve(result != 0 ? result : false);
     });
   });
 }
