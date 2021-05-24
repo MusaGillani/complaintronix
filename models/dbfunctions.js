@@ -35,9 +35,9 @@ function addComplaint(reg, name, email, hostel_no, room_no, phone_no, type) {
   });
 }
 
-function updateComplaint(reg) {
+function updateComplaint(reg,status) {
   return new Promise((resolve, reject) => {
-    let myQuery = `UPDATE complaints set status='completed'
+    let myQuery = `UPDATE complaints set status='${status}'
       WHERE reg_no=${reg};`;
     db.query(myQuery, (err) => {
       if (err) throw err;

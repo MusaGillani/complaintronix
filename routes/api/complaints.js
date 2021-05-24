@@ -30,7 +30,7 @@ router.post("/", (req, res) => {
 
 // (PUT) Update a complaint status
 router.put("/", (req, res) => {
-  db.updateComplaint(req.body.reg_no).then((result) => res.send(result));
+  db.updateComplaint(req.body.reg_no,req.body.status).then((result) => res.send(result));
 });
 
 // DELETE a complaint
