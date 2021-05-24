@@ -2,14 +2,14 @@ const db = require("./db");
 
 // TODO refactor functions to pass queries as param and store queries somewhere else
 
-function allcomplaints(){
-    return new Promise((resolve,reject) => {
-        let myQuery = `SELECT * FROM complaints;`;
-        db.query(myQuery,(err,result,fields) => {
-            if(err) reject(err);
-            else resolve(result);
-        })
-    })
+function allcomplaints() {
+  return new Promise((resolve, reject) => {
+    let myQuery = `SELECT * FROM complaints;`;
+    db.query(myQuery, (err, result, fields) => {
+      if (err) reject(err);
+      else resolve(result);
+    });
+  });
 }
 
 function getComplaints(hostelNo) {
@@ -53,26 +53,30 @@ function updateComplaint(id) {
 
 function deleteComplaint(id) {
   return new Promise((resolve, reject) => {
+    let res;
     let myQuery = `SELECT * FROM complaints
       WHERE id=${id};`;
     db.query(myQuery, function (err, result, fields) {
       if (err) reject(err);
-      else resolve(result);
+      else res = result;
     });
 
     myQuery = `DELETE FROM complaints
       WHERE id=${id};`;
     db.query(myQuery, function (err, result, fields) {
-      if (err) throw err;
-      else console.log("deleted successfully");
+      if (err) reject(err);
+      else {
+        console.log("deleted successfully");
+        resolve(res);
+      }
     });
   });
 }
 
 module.exports = {
-    allcomplaints,
-    getComplaints,
-    addComplaint,
-    updateComplaint,
-    deleteComplaint
-}
+  allcomplaints,
+  getComplaints,
+  addComplaint,
+  updateComplaint,
+  deleteComplaint,
+};

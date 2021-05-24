@@ -10,6 +10,7 @@ router.get("/all",(req,res) => {
 
 // GET complaints of a hostel
 router.get("/", (req, res) => {
+  console.log(req.query.hostel_no);
   db.getComplaints(req.query.hostel_no).then((result) => res.send(result));
 });
 
