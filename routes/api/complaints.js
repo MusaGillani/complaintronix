@@ -30,12 +30,12 @@ router.post("/", (req, res) => {
 
 // (PUT) Update a complaint status
 router.put("/", (req, res) => {
-  db.updateComplaint(req.body.id).then((result) => res.send(result));
+  db.updateComplaint(req.body.reg_no).then((result) => res.send(result));
 });
 
 // DELETE a complaint
 router.delete("/", (req, res) => {
-  db.deleteComplaint(req.body.id).then((result) => res.send(result));
+  db.deleteComplaint(req.body.reg_no).then((result) => res.send(result));
 });
 
 

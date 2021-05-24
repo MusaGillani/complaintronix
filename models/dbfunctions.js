@@ -35,15 +35,15 @@ function addComplaint(reg, name, email, hostel_no, room_no, phone_no, type) {
   });
 }
 
-function updateComplaint(id) {
+function updateComplaint(reg) {
   return new Promise((resolve, reject) => {
     let myQuery = `UPDATE complaints set status='completed'
-      WHERE id=${id};`;
+      WHERE reg_no=${reg};`;
     db.query(myQuery, (err) => {
       if (err) throw err;
     });
     myQuery = `SELECT * FROM complaints
-      WHERE id=${id};`;
+      WHERE reg_no=${reg};`;
     db.query(myQuery, function (err, result, fields) {
       if (err) reject(err);
       else resolve(result);
@@ -51,18 +51,18 @@ function updateComplaint(id) {
   });
 }
 
-function deleteComplaint(id) {
+function deleteComplaint(reg) {
   return new Promise((resolve, reject) => {
     let res;
     let myQuery = `SELECT * FROM complaints
-      WHERE id=${id};`;
+      WHERE reg_no=${reg};`;
     db.query(myQuery, function (err, result, fields) {
       if (err) reject(err);
       else res = result;
     });
 
     myQuery = `DELETE FROM complaints
-      WHERE id=${id};`;
+      WHERE reg_no=${reg};`;
     db.query(myQuery, function (err, result, fields) {
       if (err) reject(err);
       else {
