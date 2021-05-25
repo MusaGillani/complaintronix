@@ -25,7 +25,7 @@ router.post("/", (req, res) => {
     data.room_no,
     data.phone_no,
     data.type
-  ).then((result) => res.send(result));
+  ).then((result) => res.sendStatus(result));
 });
 
 // (PUT) Update a complaint status

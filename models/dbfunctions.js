@@ -25,17 +25,28 @@ function getComplaints(hostelNo) {
 
 function addComplaint(reg, name, email, hostel_no, room_no, phone_no, type) {
   return new Promise((resolve, reject) => {
-    let myQuery = `INSERT INTO complaints(reg_no,student_name,email,hostel_no,room_no,phone_no,type,status)
+    let res = 200;
+    let myQuery = `SELECT * FROM complaints WHERE reg_no=${reg};`;
+    db.query(myQuery, function (err, result, fields) {
+      if (err) reject(err);
+      else {
+        if (result != 0) res = 409;
+        resolve(res);
+      }
+    });
+    // if(res == 200){
+    myQuery = `INSERT INTO complaints(reg_no,student_name,email,hostel_no,room_no,phone_no,type,status)
       VALUES
       (${reg},'${name}','${email}',${hostel_no},${room_no},'${phone_no}','${type}','pending');`;
     db.query(myQuery, function (err, result, fields) {
       if (err) reject(err);
-      else resolve(result);
+      else resolve(res);
     });
+    // }
   });
 }
 
-function updateComplaint(reg,status) {
+function updateComplaint(reg, status) {
   return new Promise((resolve, reject) => {
     let myQuery = `UPDATE complaints set status='${status}'
       WHERE reg_no=${reg};`;
