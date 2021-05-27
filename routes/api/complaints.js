@@ -43,5 +43,12 @@ router.delete("/", (req, res) => {
   db.deleteComplaint(req.body.reg_no).then((result) => res.send(result));
 });
 
+// DELETE all complaints
+router.delete("/all", (req, res) => {
+  db.deleteAllComplaints().then((result) => res.send(result));
+});
+
+
+
 
 module.exports = router;

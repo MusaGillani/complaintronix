@@ -23,12 +23,12 @@ function getComplaints(hostelNo) {
   });
 }
 
-function getComplaintStatus(email){
-  return new Promise((resolve,reject) => {
-    let myQuery = `SELECT * FROM complaints WHERE email='${email}'` ; // query to get complaint status
-    db.query(myQuery,(err,result,fields) => {
-      if(err) reject (err);
-      else resolve(result != 0  ? result : 'empty');
+function getComplaintStatus(email) {
+  return new Promise((resolve, reject) => {
+    let myQuery = `SELECT * FROM complaints WHERE email='${email}';`; // query to get complaint status
+    db.query(myQuery, (err, result, fields) => {
+      if (err) reject(err);
+      else resolve(result != 0 ? result : "empty");
     });
   });
 }
@@ -94,6 +94,16 @@ function deleteComplaint(reg) {
   });
 }
 
+function deleteAllComplaints() {
+  return new Promise((resolve, reject) => {
+    let myQuery = `DELETE FROM complaints;`;
+    db.query(myQuery, (err, result, fields) => {
+      if(err) reject(err);
+      else resolve('deleted successfully');
+    });
+  });
+}
+
 module.exports = {
   allcomplaints,
   getComplaints,
@@ -101,4 +111,5 @@ module.exports = {
   addComplaint,
   updateComplaint,
   deleteComplaint,
+  deleteAllComplaints,
 };
