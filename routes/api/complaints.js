@@ -8,9 +8,14 @@ router.get("/all",(req,res) => {
   db.allcomplaints().then(result => res.send(result));
 })
 
+// TODO change api call to check if complaint exists and returns its status or status code 404 if does not
+// GET complaint status
+router.get("/status", (req,res) => {
+  db.getComplaintStatus(req.query.email).then(result => res.send(result));
+});
+
 // GET complaints of a hostel
 router.get("/", (req, res) => {
-  console.log(req.query.hostel_no);
   db.getComplaints(req.query.hostel_no).then((result) => res.send(result));
 });
 
