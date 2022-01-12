@@ -1,4 +1,4 @@
-const db = require("./db");
+const db = require("../config/db");
 
 // TODO refactor functions to pass queries as param and store queries somewhere else
 
@@ -98,8 +98,8 @@ function deleteAllComplaints() {
   return new Promise((resolve, reject) => {
     let myQuery = `DELETE FROM complaints;`;
     db.query(myQuery, (err, result, fields) => {
-      if(err) reject(err);
-      else resolve('deleted successfully');
+      if (err) reject(err);
+      else resolve("deleted successfully");
     });
   });
 }
