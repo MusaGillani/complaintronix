@@ -60,6 +60,14 @@ db.sync()
         serverSocket.emit("message", data);
       });
 
+      client.on("services", () => {
+        // console.log(data);
+        require("./controllers/services")
+          .fetchAll()
+          .then((data) => serverSocket.emit("message", data))
+          .catch((err) => console.log(err));
+      });
+
       //listens when a user is disconnected from the server
       client.on("disconnect", function () {
         console.log(new Date().toTimeString());
