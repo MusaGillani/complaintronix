@@ -1,22 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const complaints = require("../../models/Complaints");
-const hostelHeads = require("../../models/HostelHeads");
-const students = require("../../models/Students");
-const logs = require("../../models/Logs");
-const chats = require("../../models/Chats");
-const handlers = require("../../models/ComplaintHandlers");
-const services = require("../../models/Services");
 
 // GET if hostel head or not
 router.get("/", (req, res) => {
   // checkHostelHead(req.query.email).then((result) =>
   //   res.send(result)
   // );
-  complaints
-    .findAll()
-    .then((gigs) => console.log(gigs))
-    .catch((err) => console.log(err));
 });
 
 function checkHostelHead(email) {
