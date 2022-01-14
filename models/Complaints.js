@@ -10,10 +10,10 @@ const Complaints = db.define(
       autoIncrement: true,
       primaryKey: true,
     },
-    complaintee_reg: {
-      type: DataTypes.NUMBER,
-      allowNull: false,
-    },
+    // complaintee_reg: {
+    //   type: DataTypes.INTEGER,
+    //   allowNull: false,
+    // },
     complaint_desc: DataTypes.STRING(150),
     complaint_type: {
       type: DataTypes.STRING(20),
@@ -27,18 +27,18 @@ const Complaints = db.define(
       type: DataTypes.STRING(20),
       validate: { isIn: [["UNASSIGNED", "ASSIGNED", "RESOLVED"]] },
     },
-    hostel_no: {
-      type: DataTypes.NUMBER,
-      allowNull: false,
-    },
+    // hostel_no: {
+    //   type: DataTypes.INTEGER,
+    //   allowNull: false,
+    // },
     room_no: {
-      type: DataTypes.NUMBER,
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
-    assigned_to: {
-      type: DataTypes.STRING(20),
-      allowNull: false,
-    },
+    // assigned_to: {
+    //   type: DataTypes.STRING(20),
+    //   allowNull: false,
+    // },
   },
   {
     timestamps: false,

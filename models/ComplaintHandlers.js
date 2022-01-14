@@ -6,7 +6,7 @@ const ComplaintHandlers = db.define(
   "complaint_handlers",
   {
     reg_no: {
-      type: DataTypes.NUMBER,
+      type: DataTypes.INTEGER,
       primaryKey: true,
       allowNull: false,
     },

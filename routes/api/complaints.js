@@ -25,7 +25,24 @@ router.get("/status", (req, res) => {
 
 // GET complaints of a hostel
 router.get("/", (req, res) => {
-  db.getComplaints(req.query.hostel_no).then((result) => res.send(result));
+  // db.getComplaints(req.query.hostel_no).then((result) => res.send(result));
+  // services
+  complaints
+    .create({
+      complaint_desc: "111",
+      complaint_type: "Short Cable",
+      complaint_status: "UNASSIGNED",
+      room_no: "1",
+    })
+    .then(() =>
+      complaints
+        .findAll()
+        .then((gigs) => {
+          console.log(gigs);
+          res.send(gigs);
+        })
+        .catch((err) => console.log(err))
+    );
 });
 
 // (POST) Add a new complaint
