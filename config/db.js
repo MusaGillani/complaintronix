@@ -1,7 +1,7 @@
 const Sequelize = require("sequelize");
 
 const dbConfig = require("./db.config.js");
-
+const logger = require("../util/logging");
 var sequelize;
 if (process.env.DATABASE_URL) {
   sequelize = new Sequelize(process.env.DATABASE_URL, {
@@ -23,6 +23,7 @@ if (process.env.DATABASE_URL) {
         rejectUnauthorized: false,
       },
     },
+    logging: (msg) => logger.debug(msg),
   });
 }
 module.exports = sequelize;

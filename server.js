@@ -2,6 +2,7 @@
 var express = require("express");
 
 // local imports
+const logger = require("./util/logging");
 const db = require("./config/db");
 const Students = require("./models/Students");
 const Complaints = require("./models/Complaints");
@@ -69,9 +70,12 @@ Complaints.belongsTo(ComplaintHandlers, {
 
 db.authenticate()
   .then(() => console.log("Connection has been established successfully."))
-  .catch((error) => console.error("Unable to connect to the database:", error));
+  .catch((error) => {
+    logger.error("Unable to connect to the database:", error.toString());
+    console.error("Unable to connect to the database:", error);
+  });
 
-db.sync()
+db.sync({ force: true })
   .then(() => {
     console.log("synced");
     var server = app.listen(PORT, () =>
@@ -79,6 +83,7 @@ db.sync()
     );
     require("./routes/messageSocket")(server);
   })
-  .catch((err) => {
-    console.log(err);
+  .catch((error) => {
+    logger.error(error.toString());
+    console.log(error);
   });

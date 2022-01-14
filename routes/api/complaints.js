@@ -4,6 +4,7 @@ const db = require("../../models/dbfunctions");
 const complaints = require("../../models/Complaints");
 const services = require("../../models/Services");
 
+const logger = require("../../util/logging");
 //  GET all complaints
 router.get("/all", (req, res) => {
   // db.allcomplaints().then(result => res.send(result));
@@ -14,10 +15,12 @@ router.get("/all", (req, res) => {
       console.log(gigs);
       res.send(gigs);
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      logger.error(err.toString());
+      console.log(err);
+    });
 });
 
-// TODO change api call to check if complaint exists and returns its status or status code 404 if does not
 // GET complaint status
 router.get("/status", (req, res) => {
   db.getComplaintStatus(req.query.email).then((result) => res.send(result));
@@ -28,21 +31,24 @@ router.get("/", (req, res) => {
   // db.getComplaints(req.query.hostel_no).then((result) => res.send(result));
   // services
   complaints
-    .create({
-      complaint_desc: "111",
-      complaint_type: "Short Cable",
-      complaint_status: "UNASSIGNED",
-      room_no: "1",
+    // .create({
+    //   complaint_desc: "111",
+    //   complaint_type: "Short Cable",
+    //   complaint_status: "UNASSIGNED",
+    //   room_no: "1",
+    // })
+    // .then(() =>
+    //   complaints
+    .findAll()
+    .then((gigs) => {
+      console.log(gigs);
+      res.send(gigs);
     })
-    .then(() =>
-      complaints
-        .findAll()
-        .then((gigs) => {
-          console.log(gigs);
-          res.send(gigs);
-        })
-        .catch((err) => console.log(err))
-    );
+    .catch((err) => {
+      logger.error(err.toString());
+      console.log(err);
+    });
+  // );
 });
 
 // (POST) Add a new complaint

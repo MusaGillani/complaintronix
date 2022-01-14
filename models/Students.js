@@ -14,6 +14,10 @@ const Student = db.define(
     hostel_no: {
       type: DataTypes.INTEGER,
       allowNull: true,
+      references: {
+        model: "hostel_heads",
+        key: "assigned_hostel",
+      },
     },
     room_no: {
       type: DataTypes.INTEGER,
