@@ -1,24 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../../models/dbfunctions");
-const complaints = require("../../models/Complaints");
-const services = require("../../models/Services");
 
 const logger = require("../../util/logging");
 //  GET all complaints
 router.get("/all", (req, res) => {
   // db.allcomplaints().then(result => res.send(result));
-  // complaints
-  services
-    .findAll()
-    .then((gigs) => {
-      console.log(gigs);
-      res.send(gigs);
-    })
-    .catch((err) => {
-      logger.error(err.toString());
-      console.log(err);
-    });
 });
 
 // GET complaint status
@@ -29,26 +16,6 @@ router.get("/status", (req, res) => {
 // GET complaints of a hostel
 router.get("/", (req, res) => {
   // db.getComplaints(req.query.hostel_no).then((result) => res.send(result));
-  // services
-  complaints
-    // .create({
-    //   complaint_desc: "111",
-    //   complaint_type: "Short Cable",
-    //   complaint_status: "UNASSIGNED",
-    //   room_no: "1",
-    // })
-    // .then(() =>
-    //   complaints
-    .findAll()
-    .then((gigs) => {
-      console.log(gigs);
-      res.send(gigs);
-    })
-    .catch((err) => {
-      logger.error(err.toString());
-      console.log(err);
-    });
-  // );
 });
 
 // (POST) Add a new complaint

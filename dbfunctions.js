@@ -2,18 +2,6 @@ const db = require("../config/db");
 
 // TODO refactor functions to pass queries as param and store queries somewhere else
 
-function test() {
-  return new Promise((resolve, reject) => {
-    let myQuery = `SELECT * FROM students;`;
-    // db.query(text,params,callback)
-    // if no params, can omit passing that
-    db.query(myQuery, (err, result) => {
-      if (err) reject(err);
-      else resolve(result);
-    });
-  });
-}
-
 function allcomplaints() {
   return new Promise((resolve, reject) => {
     let myQuery = `SELECT * FROM complaints;`;
@@ -117,7 +105,6 @@ function deleteAllComplaints() {
 }
 
 module.exports = {
-  test,
   allcomplaints,
   getComplaints,
   getComplaintStatus,

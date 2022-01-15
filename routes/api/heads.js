@@ -1,28 +1,35 @@
 const express = require("express");
 
 const logger = require("../../util/logging");
-
-const HostelHeads = require("../../models/HostelHeads");
+const db = require("../../models/dbfunctions");
+// const HostelHeads = require("../../models/HostelHeads");
 
 const router = express.Router();
 
 // GET if hostel head or not
 router.get("/", (req, res) => {
-  // checkHostelHead(req.query.email).then((result) =>
-  //   res.send(result)
-  // );
-  HostelHeads.findAll()
-    .then((gigs) => {
-      console.log(gigs);
-      logger.debug(gigs);
-      res.send(gigs);
-    })
+  db.test()
+    .then((result) => res.send(result))
     .catch((error) => {
       logger.error(error.toString());
       console.error(error);
     });
+  // checkHostelHead(req.query.email).then((result) =>
+  //   res.send(result)
+  // );
+  // HostelHeads.findAll()
+  //   .then((gigs) => {
+  //     console.log(gigs);
+  //     logger.debug(gigs);
+  //     res.send(gigs);
+  //   })
+  //   .catch((error) => {
+  //     logger.error(error.toString());
+  //     console.error(error);
+  //   });
 });
 
+/*
 router.get("/run", (req, res) => {
   HostelHeads.bulkCreate([
     {
@@ -157,6 +164,7 @@ router.get("/run", (req, res) => {
       console.log(err);
     });
 });
+*/
 
 function checkHostelHead(email) {
   return new Promise((resolve, reject) => {
