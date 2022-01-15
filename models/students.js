@@ -28,7 +28,7 @@ function checkStudent(email, password) {
       let myQuery = `SELECT * FROM students WHERE email='${email}' AND password='${password}';`; // query to get check if a hostel_head exists
       db.query({ text: myQuery, rowMode: "array" }, (err, result) => {
         if (err) reject(err);
-        else resolve(result != 0 ? result : "empty");
+        else resolve(result.rows.length != 0  ? result : "empty");
       });
     });
   }
