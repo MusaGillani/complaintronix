@@ -38,46 +38,62 @@ function getComplaints(hostelNo) {
 
 function getComplaintStatus(email) {
   return new Promise((resolve, reject) => {
-    let myQuery = `SELECT * FROM complaints WHERE email='${email}';`; // query to get complaint status
+    console.log(email);
+    myQuery = `SELECT * FROM complaints inner join students on complaints.complaintee_reg=students.reg_no  where students.email = '${email}';`;
     db.query(myQuery, (err, result, fields) => {
       if (err) reject(err);
-      else resolve(result != 0 ? result : "empty");
+      else {
+        console.log(result.rows);
+        resolve(result.rows.length != 0 ? result.rows : "empty");
+      }
     });
   });
 }
 
-function addComplaint(reg, name, email, hostel_no, room_no, phone_no, type) {
+function addComplaint(email, complaint_desc, complaint_type) {
   return new Promise((resolve, reject) => {
-    let res = 200;
-    let myQuery = `SELECT * FROM complaints WHERE reg_no=${reg};`;
-    db.query(myQuery, function (err, result, fields) {
-      if (err) reject(err);
-      else {
-        if (result != 0) res = 409;
-        resolve(res);
+    let reg_no, hostel_no, room_no;
+    console.log(email);
+    db.query(
+      `SELECT reg_no, hostel_no, room_no from students where email='${email}';`,
+      (err, result, fields) => {
+        console.log(result);
+        reg_no = result.rows[0].reg_no;
+        hostel_no = result.rows[0].hostel_no;
+        room_no = result.rows[0].room_no;
+        console.log(reg_no);
+        console.log(hostel_no);
+        console.log(room_no);
+        let res = 200;
+        let myQuery = `SELECT * FROM complaints WHERE complaintee_reg=${reg_no};`;
+        db.query(myQuery, (err, result, fields) => {
+          if (err) reject(err);
+          else {
+            console.log(result);
+            if (result.rows.length == 0) {
+              myQuery = `INSERT INTO complaints(complaintee_reg,complaint_desc, complaint_type, hostel_no, room_no) VALUES
+              (${reg_no},'${complaint_desc}','${complaint_type}',${hostel_no},${room_no});`;
+              db.query(myQuery, function (err, result, fields) {
+                if (err) reject(err);
+                else resolve("added");
+              });
+            } else resolve("exists");
+          }
+        });
       }
-    });
-    // if(res == 200){
-    myQuery = `INSERT INTO complaints(reg_no,student_name,email,hostel_no,room_no,phone_no,type,status)
-      VALUES
-      (${reg},'${name}','${email}',${hostel_no},${room_no},'${phone_no}','${type}','pending');`;
-    db.query(myQuery, function (err, result, fields) {
-      if (err) reject(err);
-      else resolve(res);
-    });
-    // }
+    );
   });
 }
 
 function updateComplaint(reg, status) {
   return new Promise((resolve, reject) => {
-    let myQuery = `UPDATE complaints set status='${status}'
-      WHERE reg_no=${reg};`;
+    let myQuery = `UPDATE complaints set complaint_status='${status}'
+      WHERE complaintee_reg=${reg};`;
     db.query(myQuery, (err) => {
       if (err) throw err;
     });
     myQuery = `SELECT * FROM complaints
-      WHERE reg_no=${reg};`;
+      WHERE complaintee_reg=${reg};`;
     db.query(myQuery, function (err, result, fields) {
       if (err) reject(err);
       else resolve(result);
@@ -89,14 +105,14 @@ function deleteComplaint(reg) {
   return new Promise((resolve, reject) => {
     let res;
     let myQuery = `SELECT * FROM complaints
-      WHERE reg_no=${reg};`;
+      WHERE complaintee_reg=${reg};`;
     db.query(myQuery, function (err, result, fields) {
       if (err) reject(err);
       else res = result;
     });
 
     myQuery = `DELETE FROM complaints
-      WHERE reg_no=${reg};`;
+      WHERE complaintee_reg=${reg};`;
     db.query(myQuery, function (err, result, fields) {
       if (err) reject(err);
       else {
