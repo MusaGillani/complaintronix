@@ -5,7 +5,7 @@ const complaints = require("../../models/complaints");
 const logger = require("../../util/logging");
 //  GET all complaints
 router.get("/all", (req, res) => {
-  complaints.allcomplaints().then(result => res.send(result));
+  complaints.allcomplaints().then((result) => res.send(result));
 });
 
 // GET complaint status
@@ -19,21 +19,15 @@ router.get("/status", (req, res) => {
 router.get("/", (req, res) => {
   // complaints.getComplaints(req.query.hostel_no).then((result) => res.send(result));
   complaints
-  .getComplaints(req.query.hostel_no)
-  .then(result=>res.send(result));
+    .getComplaints(req.query.hostel_no)
+    .then((result) => res.send(result));
 });
 
 // (POST) Add a new complaint
 router.post("/", (req, res) => {
   const data = req.body;
   complaints
-    .addComplaint(
-      data.reg_no,
-      data.complaint_desc,
-      data.complaint_type,
-      data.hostel_no,
-      data.room_no,
-    )
+    .addComplaint(data.email, data.complaint_desc, data.complaint_type)
     .then((result) => res.send(result));
 });
 

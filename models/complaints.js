@@ -49,30 +49,38 @@ function getComplaintStatus(email) {
   });
 }
 
-function addComplaint(
-  reg_no,
-  complaint_desc,
-  complaint_type,
-  hostel_no,
-  room_no
-) {
+function addComplaint(email, complaint_desc, complaint_type) {
   return new Promise((resolve, reject) => {
-    let res = 200;
-    let myQuery = `SELECT * FROM complaints WHERE complaintee_reg=${reg_no};`;
-    db.query(myQuery, (err, result, fields) => {
-      if (err) reject(err);
-      else {
+    let reg_no, hostel_no, room_no;
+    console.log(email);
+    db.query(
+      `SELECT reg_no, hostel_no, room_no from students where email='${email}';`,
+      (err, result, fields) => {
         console.log(result);
-        if (result.rows.length == 0) {
-          myQuery = `INSERT INTO complaints(complaintee_reg,complaint_desc, complaint_type, hostel_no, room_no) VALUES
-      (${reg_no},'${complaint_desc}','${complaint_type}',${hostel_no},${room_no});`;
-          db.query(myQuery, function (err, result, fields) {
-            if (err) reject(err);
-            else resolve("added");
-          });
-        } else resolve("exists");
+        reg_no = result.rows[0].reg_no;
+        hostel_no = result.rows[0].hostel_no;
+        room_no = result.rows[0].room_no;
+        console.log(reg_no);
+        console.log(hostel_no);
+        console.log(room_no);
+        let res = 200;
+        let myQuery = `SELECT * FROM complaints WHERE complaintee_reg=${reg_no};`;
+        db.query(myQuery, (err, result, fields) => {
+          if (err) reject(err);
+          else {
+            console.log(result);
+            if (result.rows.length == 0) {
+              myQuery = `INSERT INTO complaints(complaintee_reg,complaint_desc, complaint_type, hostel_no, room_no) VALUES
+              (${reg_no},'${complaint_desc}','${complaint_type}',${hostel_no},${room_no});`;
+              db.query(myQuery, function (err, result, fields) {
+                if (err) reject(err);
+                else resolve("added");
+              });
+            } else resolve("exists");
+          }
+        });
       }
-    });
+    );
   });
 }
 
