@@ -2,6 +2,11 @@ const { DataTypes } = require("sequelize");
 
 const db = require("../config/db");
 
+//! since reg_no is a primary key in hsotel heads
+// sequelize takes that as a foreign key tho we do not use it
+// either change foreign key in heads table
+// or use non primary key here
+
 const Student = db.define(
   "students",
   {

@@ -23,7 +23,10 @@ if (process.env.DATABASE_URL) {
         rejectUnauthorized: false,
       },
     },
-    logging: (msg) => logger.debug(msg),
+    logging: (msg) => {
+      logger.debug(msg);
+      console.log(msg);
+    },
   });
 }
 module.exports = sequelize;

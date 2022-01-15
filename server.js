@@ -34,6 +34,7 @@ Students.hasMany(Complaints, {
   },
 });
 Students.belongsTo(HostelHeads, {
+  targetKey: "assigned_hostel",
   foreignKey: {
     allowNull: false,
     // foreignKey: "complaints_hostel_no_fkey",
@@ -69,18 +70,25 @@ Complaints.belongsTo(ComplaintHandlers, {
 //! ERROR with querying referenced tables, column name errors
 
 db.authenticate()
-  .then(() => console.log("Connection has been established successfully."))
+  .then(() => {
+    logger.debug("Connection has been established successfully.");
+    console.log("Connection has been established successfully.");
+  })
   .catch((error) => {
     logger.error("Unable to connect to the database:", error.toString());
     console.error("Unable to connect to the database:", error);
   });
 
-db.sync({ force: true })
+db
+  // sync()
+  .sync({ force: true })
   .then(() => {
+    logger.debug("synced");
     console.log("synced");
-    var server = app.listen(PORT, () =>
-      console.log(`Server started on ${PORT}`)
-    );
+    var server = app.listen(PORT, () => {
+      logger.debug(`Server started on ${PORT}`);
+      console.log(`Server started on ${PORT}`);
+    });
     require("./routes/messageSocket")(server);
   })
   .catch((error) => {
