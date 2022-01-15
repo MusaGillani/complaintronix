@@ -1,13 +1,14 @@
+const hstore = require("pg-hstore")();
 const db = require("../config/db");
 
 // TODO refactor functions to pass queries as param and store queries somewhere else
 
 function test() {
   return new Promise((resolve, reject) => {
-    let myQuery = `SELECT * FROM students;`;
+    let myQuery = `SELECT * FROM hostel_heads;`;
     // db.query(text,params,callback)
     // if no params, can omit passing that
-    db.query(myQuery, (err, result) => {
+    db.query({ text: myQuery, rowMode: "array" }, (err, result) => {
       if (err) reject(err);
       else resolve(result);
     });
