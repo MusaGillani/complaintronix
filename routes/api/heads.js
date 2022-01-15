@@ -1,18 +1,20 @@
 const express = require("express");
 
 const logger = require("../../util/logging");
-const db = require("../../models/dbfunctions");
+const heads = require("../../models/heads");
 // const HostelHeads = require("../../models/HostelHeads");
 
 const router = express.Router();
 
 // GET if hostel head or not
 router.get("/", (req, res) => {
-  db.test()
+  heads
+    .checkHostelHead(req.query.reg_no, req.query.hostel_no)
     .then((result) => res.send(result))
     .catch((error) => {
       logger.error(error.toString());
       console.error(error);
+      res.status(404);
     });
   // checkHostelHead(req.query.email).then((result) =>
   //   res.send(result)
@@ -166,14 +168,14 @@ router.get("/run", (req, res) => {
 });
 */
 
-function checkHostelHead(email) {
-  return new Promise((resolve, reject) => {
-    let myQuery = `SELECT hostel_no FROM hostel_heads WHERE email="${email}";`;
-    complaints.query(myQuery, function (err, result, fields) {
-      if (err) reject(err);
-      else resolve(result != 0 ? result : false);
-    });
-  });
-}
+// function checkHostelHead(email) {
+//   return new Promise((resolve, reject) => {
+//     let myQuery = `SELECT hostel_no FROM hostel_heads WHERE email="${email}";`;
+//     complaints.query(myQuery, function (err, result, fields) {
+//       if (err) reject(err);
+//       else resolve(result != 0 ? result : false);
+//     });
+//   });
+// }
 
 module.exports = router;

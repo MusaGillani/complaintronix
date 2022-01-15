@@ -35,9 +35,9 @@ function getComplaints(hostelNo) {
   });
 }
 
-function getComplaintStatus(email) {
+function getComplaintStatus(reg_no) {
   return new Promise((resolve, reject) => {
-    let myQuery = `SELECT * FROM complaints WHERE email='${email}';`; // query to get complaint status
+    let myQuery = `SELECT * FROM complaints WHERE complaintee_reg='${reg_no}';`; // query to get complaint status
     db.query(myQuery, (err, result, fields) => {
       if (err) reject(err);
       else resolve(result != 0 ? result : "empty");
@@ -45,10 +45,10 @@ function getComplaintStatus(email) {
   });
 }
 
-function addComplaint(reg, name, email, hostel_no, room_no, phone_no, type) {
+function addComplaint(reg, complaint_desc, complaint_type, hostel_no, room_no) {
   return new Promise((resolve, reject) => {
     let res = 200;
-    let myQuery = `SELECT * FROM complaints WHERE reg_no=${reg};`;
+    let myQuery = `SELECT * FROM complaints WHERE complaintee_reg=${reg};`;
     db.query(myQuery, function (err, result, fields) {
       if (err) reject(err);
       else {
@@ -57,9 +57,8 @@ function addComplaint(reg, name, email, hostel_no, room_no, phone_no, type) {
       }
     });
     // if(res == 200){
-    myQuery = `INSERT INTO complaints(reg_no,student_name,email,hostel_no,room_no,phone_no,type,status)
-      VALUES
-      (${reg},'${name}','${email}',${hostel_no},${room_no},'${phone_no}','${type}','pending');`;
+    myQuery = `INSERT INTO complaints VALUES
+      (${reg},'${complaint_desc}','${complaint_type}',${hostel_no},${room_no});`;
     db.query(myQuery, function (err, result, fields) {
       if (err) reject(err);
       else resolve(res);
@@ -70,7 +69,7 @@ function addComplaint(reg, name, email, hostel_no, room_no, phone_no, type) {
 
 function updateComplaint(reg, status) {
   return new Promise((resolve, reject) => {
-    let myQuery = `UPDATE complaints set status='${status}'
+    let myQuery = `UPDATE complaints set complaint_status='${status}'
       WHERE reg_no=${reg};`;
     db.query(myQuery, (err) => {
       if (err) throw err;
