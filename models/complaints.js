@@ -45,25 +45,30 @@ function getComplaintStatus(reg_no) {
   });
 }
 
-function addComplaint(reg, complaint_desc, complaint_type, hostel_no, room_no) {
+function addComplaint(
+  reg_no,
+  complaint_desc,
+  complaint_type,
+  hostel_no,
+  room_no
+) {
   return new Promise((resolve, reject) => {
     let res = 200;
-    let myQuery = `SELECT * FROM complaints WHERE complaintee_reg=${reg};`;
-    db.query(myQuery, function (err, result, fields) {
+    let myQuery = `SELECT * FROM complaints WHERE complaintee_reg=${reg_no};`;
+    db.query(myQuery, (err, result, fields) => {
       if (err) reject(err);
       else {
-        if (result != 0) res = 409;
-        resolve(res);
+        console.log(result);
+        if (result.rows.length == 0) {
+          myQuery = `INSERT INTO complaints(complaintee_reg,complaint_desc) VALUES
+      (${reg_no},'${complaint_desc}','${complaint_type}',${hostel_no},${room_no});`;
+          db.query(myQuery, function (err, result, fields) {
+            if (err) reject(err);
+            else resolve("added");
+          });
+        } else resolve("exists");
       }
     });
-    // if(res == 200){
-    myQuery = `INSERT INTO complaints VALUES
-      (${reg},'${complaint_desc}','${complaint_type}',${hostel_no},${room_no});`;
-    db.query(myQuery, function (err, result, fields) {
-      if (err) reject(err);
-      else resolve(res);
-    });
-    // }
   });
 }
 
