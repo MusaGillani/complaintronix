@@ -60,7 +60,7 @@ function addComplaint(
       else {
         console.log(result);
         if (result.rows.length == 0) {
-          myQuery = `INSERT INTO complaints(complaintee_reg,complaint_desc) VALUES
+          myQuery = `INSERT INTO complaints(complaintee_reg,complaint_desc, complaint_type, hostel_no, room_no) VALUES
       (${reg_no},'${complaint_desc}','${complaint_type}',${hostel_no},${room_no});`;
           db.query(myQuery, function (err, result, fields) {
             if (err) reject(err);
@@ -75,12 +75,12 @@ function addComplaint(
 function updateComplaint(reg, status) {
   return new Promise((resolve, reject) => {
     let myQuery = `UPDATE complaints set complaint_status='${status}'
-      WHERE reg_no=${reg};`;
+      WHERE complaintee_reg=${reg};`;
     db.query(myQuery, (err) => {
       if (err) throw err;
     });
     myQuery = `SELECT * FROM complaints
-      WHERE reg_no=${reg};`;
+      WHERE complaintee_reg=${reg};`;
     db.query(myQuery, function (err, result, fields) {
       if (err) reject(err);
       else resolve(result);
@@ -92,14 +92,14 @@ function deleteComplaint(reg) {
   return new Promise((resolve, reject) => {
     let res;
     let myQuery = `SELECT * FROM complaints
-      WHERE reg_no=${reg};`;
+      WHERE complaintee_reg=${reg};`;
     db.query(myQuery, function (err, result, fields) {
       if (err) reject(err);
       else res = result;
     });
 
     myQuery = `DELETE FROM complaints
-      WHERE reg_no=${reg};`;
+      WHERE complaintee_reg=${reg};`;
     db.query(myQuery, function (err, result, fields) {
       if (err) reject(err);
       else {
