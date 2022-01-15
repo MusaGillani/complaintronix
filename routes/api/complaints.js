@@ -11,7 +11,7 @@ router.get("/all", (req, res) => {
 // GET complaint status
 router.get("/status", (req, res) => {
   complaints
-    .getComplaintStatus(req.query.reg_no)
+    .getComplaintStatus(req.query.email)
     .then((result) => res.send(result));
 });
 

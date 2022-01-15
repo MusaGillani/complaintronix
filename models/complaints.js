@@ -35,12 +35,16 @@ function getComplaints(hostelNo) {
   });
 }
 
-function getComplaintStatus(reg_no) {
+function getComplaintStatus(email) {
   return new Promise((resolve, reject) => {
-    let myQuery = `SELECT * FROM complaints WHERE complaintee_reg='${reg_no}';`; // query to get complaint status
+    console.log(email);
+    myQuery = `SELECT * FROM complaints inner join students on complaints.complaintee_reg=students.reg_no  where students.email = '${email}';`;
     db.query(myQuery, (err, result, fields) => {
       if (err) reject(err);
-      else resolve(result != 0 ? result : "empty");
+      else {
+        console.log(result.rows);
+        resolve(result.rows.length != 0 ? result.rows : "empty");
+      }
     });
   });
 }
