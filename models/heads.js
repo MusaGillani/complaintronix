@@ -7,7 +7,7 @@ function checkHostelHead(reg_no, hostel_no) {
     let myQuery = `SELECT * FROM hostel_heads WHERE reg_no='${reg_no}' AND assigned_hostel='${hostel_no}';`; // query to get check if a hostel_head exists
     db.query({ text: myQuery, rowMode: "array" }, (err, result) => {
       if (err) reject(err);
-      else resolve(result != 0 ? result : "empty");
+      else resolve(result.rows.length != 0 ? "found" : "empty");
     });
   });
 }
