@@ -1,13 +1,35 @@
+const chats = require("../models/chats");
+
 var socketIO = require("socket.io");
 const SOCKETURL = "/messageSocket";
+
 module.exports = (server) => {
   var serverSocket = socketIO(server);
   serverSocket.of(SOCKETURL).on("connection", (client) => {
     console.log(new Date().toTimeString());
     console.log("new user connected", client.id);
+
+    chats
+      .getPreviousMessages()
+      .then((result) => {
+        let allMessages = result;
+        client.emit("message", JSON.stringify(allMessages));
+      })
+      .catch((err) => console.log(err));
+
     client.on("message", function name(data) {
-      console.log(data);
-      serverSocket.emit("message", data);
+      console.log(data, client.id);
+      // serverSocket.emit("message", data);
+      let allMessages;
+      chats
+        .addMessage(data["sender"], data["text"])
+        .then((result) => {
+          allMessages = result;
+          console.log(allMessages[allMessages.length - 1]);
+          // data = data + " from server";
+          client.emit("message", JSON.stringify(allMessages));
+        })
+        .catch((err) => console.log(err));
     });
 
     client.on("services", () => {
